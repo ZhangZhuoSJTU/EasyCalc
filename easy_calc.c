@@ -116,7 +116,7 @@ Value *parse_stack() {
     get_next_char();
     int8_t idx = parse_num();
     if (idx >= 5 || idx < 0) {
-        puts("a index (0 - 4) is requried for stack variable");
+        puts("an index (0 - 4) is requried for stack variable");
         exit(1);
     }
 
