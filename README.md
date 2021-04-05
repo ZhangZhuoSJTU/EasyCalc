@@ -2,6 +2,8 @@
 
 EasyCalc is a simple calcuator which supports 4 register variables (_a_, _b_, _c_, and _d_), and a stack variable (_s_) with 5 elements. It supports addition and subtraction. All the constants should be in the range [0, 9].
 
+If the user does not provide input filename, stdin will be used.
+
 Following is the grammar of input files:
 
 ```c

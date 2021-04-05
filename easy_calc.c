@@ -7,14 +7,17 @@
 #define INT_CHAR(c) ((int64_t)(c))
 
 void open_input(int argc, const char **argv) {
-    if (argc != 2 || !strcmp(argv[1], "-h")) {
-        puts(
-            "Usage: ./easy_calc <filename>\n\n"
+    if (argc > 2 || (argc == 2 && !strcmp(argv[1], "-h"))) {
+        printf(
+            "Usage: %s [filename]\n\n"
 
             "EasyCalc is a simple calcuator which supports 4 register "
             "variables (a, b, c, and d), and a stack variable (s) with 5 "
             "elements. It supports addition and subtraction. All the constants "
             "should be in the range [0, 9].\n\n"
+
+            "If the user does not provide input filename, stdin will be "
+            "used.\n\n"
 
             "Following is the grammar of input files:\n\n"
             "\tProgram    :: Statements\n"
@@ -33,13 +36,18 @@ void open_input(int argc, const char **argv) {
             "Additionally, EasyCalc has three semantic constraints:\n\n"
             "    a) the index of stack can not overflow (0 <= idx <= 5)\n"
             "    b) LHS cannot be a constant\n"
-            "    c) every variable should be defined before using\n");
-        exit(argc != 2);
+            "    c) every variable should be defined before using\n",
+            argv[0]);
+        exit(strcmp(argv[1], "-h"));
     }
 
-    if (!(input_stream = fopen(argv[1], "r"))) {
-        printf("error (%d): %s\n", errno, strerror(errno));
-        exit(1);
+    if (argc == 1) {
+        input_stream = stdin;
+    } else {
+        if (!(input_stream = fopen(argv[1], "r"))) {
+            printf("error (%d): %s\n", errno, strerror(errno));
+            exit(1);
+        }
     }
 }
 
