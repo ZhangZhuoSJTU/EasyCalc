@@ -6,9 +6,14 @@
 
 #define INT_CHAR(c) ((int64_t)(c))
 
+void show_parsed_char() {
+    fprintf(stdout, "parsed characters: %ld\n", parsed_char);
+}
+
 void open_input(int argc, const char **argv) {
     if (argc > 2 || (argc == 2 && !strcmp(argv[1], "-h"))) {
-        printf(
+        fprintf(
+            stderr,
             "Usage: %s [filename]\n\n"
 
             "EasyCalc is a simple calcuator which supports 4 register "
@@ -45,7 +50,7 @@ void open_input(int argc, const char **argv) {
         input_stream = stdin;
     } else {
         if (!(input_stream = fopen(argv[1], "r"))) {
-            printf("error (%d): %s\n", errno, strerror(errno));
+            fprintf(stderr, "error (%d): %s\n", errno, strerror(errno));
             exit(1);
         }
     }
@@ -74,6 +79,7 @@ void get_next_char() {
         }
 
         if (cur_char != ' ' && cur_char != '\n' && cur_char != '\r') {
+            parsed_char += 1;
             break;
         }
     }
@@ -201,18 +207,19 @@ void parse_program() {
 }
 
 int main(int argc, const char **argv) {
+    atexit(show_parsed_char);
     open_input(argc, argv);
 
     get_next_char();
     parse_program();
 
-#define SHOW_VALUE(v, name)                           \
-    do {                                              \
-        if ((v).defined) {                            \
-            printf("%12s: %ld\n", (name), (v).value); \
-        } else {                                      \
-            printf("%12s: undef\n", (name));          \
-        }                                             \
+#define SHOW_VALUE(v, name)                                    \
+    do {                                                       \
+        if ((v).defined) {                                     \
+            fprintf(stderr, "%12s: %ld\n", (name), (v).value); \
+        } else {                                               \
+            fprintf(stderr, "%12s: undef\n", (name));          \
+        }                                                      \
     } while (0)
 
     SHOW_VALUE(reg_a, "Register A");
