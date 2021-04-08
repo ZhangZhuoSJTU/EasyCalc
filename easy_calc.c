@@ -58,7 +58,7 @@ void open_input(int argc, const char **argv) {
 
 int64_t get_value(Value *p) {
     if (!p->defined) {
-        puts("undefined variable");
+        fprintf(stderr, "undefined variable");
         exit(1);
     }
 
@@ -115,20 +115,20 @@ Value *parse_stack() {
 
     get_next_char();
     if (cur_char != INT_CHAR('[')) {
-        puts("'[' is requried for stack variable");
+        fprintf(stderr, "'[' is requried for stack variable");
         exit(1);
     }
 
     get_next_char();
     int8_t idx = parse_num();
     if (idx >= 5 || idx < 0) {
-        puts("an index (0 - 4) is requried for stack variable");
+        fprintf(stderr, "an index (0 - 4) is requried for stack variable");
         exit(1);
     }
 
     get_next_char();
     if (cur_char != INT_CHAR(']')) {
-        puts("']' is requried for stack variable");
+        fprintf(stderr, "']' is requried for stack variable");
         exit(1);
     }
 
@@ -141,14 +141,14 @@ void parse_expr() {
     if (!lhs_p) {
         lhs_p = parse_stack();
         if (!lhs_p) {
-            puts("invalid LHS");
+            fprintf(stderr, "invalid LHS");
             exit(1);
         }
     }
 
     get_next_char();
     if (cur_char != INT_CHAR('=')) {
-        puts("'=' is required");
+        fprintf(stderr, "'=' is required");
         exit(1);
     }
 
@@ -164,7 +164,7 @@ void parse_expr() {
             get_next_char();
         } else {
             if (op_is_required) {
-                puts("'+', -', or ';' is required");
+                fprintf(stderr, "'+', -', or ';' is required");
                 exit(1);
             }
         }
@@ -177,7 +177,7 @@ void parse_expr() {
                 // parse regiser fail
                 Value *stack_p = parse_stack();
                 if (!stack_p) {
-                    puts("invalid RHS");
+                    fprintf(stderr, "invalid RHS");
                     exit(1);
                 } else {
                     cur_value = get_value(stack_p);
