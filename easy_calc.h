@@ -20,7 +20,7 @@ FILE *input_stream;
 // current char
 int cur_char;
 
-// number of parsed char
-size_t parsed_char;
+// number of parsed vars
+size_t parsed_vars;
 
 #endif

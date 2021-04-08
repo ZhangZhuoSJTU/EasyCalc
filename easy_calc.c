@@ -6,9 +6,7 @@
 
 #define INT_CHAR(c) ((int64_t)(c))
 
-void show_parsed_char() {
-    fprintf(stdout, "parsed characters: %ld\n", parsed_char);
-}
+void show_parsed() { fprintf(stdout, "parsed: %ld\n", parsed_vars); }
 
 void open_input(int argc, const char **argv) {
     if (argc > 2 || (argc == 2 && !strcmp(argv[1], "-h"))) {
@@ -79,7 +77,6 @@ void get_next_char() {
         }
 
         if (cur_char != ' ' && cur_char != '\n' && cur_char != '\r') {
-            parsed_char += 1;
             break;
         }
     }
@@ -145,6 +142,7 @@ void parse_expr() {
             exit(1);
         }
     }
+    parsed_vars += 1;
 
     get_next_char();
     if (cur_char != INT_CHAR('=')) {
@@ -187,6 +185,7 @@ void parse_expr() {
             }
         }
 
+        parsed_vars += 1;
         sum_value += sign * cur_value;
         op_is_required = true;
 
@@ -207,7 +206,7 @@ void parse_program() {
 }
 
 int main(int argc, const char **argv) {
-    atexit(show_parsed_char);
+    atexit(show_parsed);
     open_input(argc, argv);
 
     get_next_char();
